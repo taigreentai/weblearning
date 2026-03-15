@@ -1,0 +1,6 @@
+[
+    {"Identifier": "A001", "DisplayName": "Agreement 1", "Status": "Active", "Category1": "Residential", "Category2": "Electricity", "RequiresAction": "Yes"},
+    {"Identifier": "A002", "DisplayName": "Agreement 2", "Status": "Pending", "Category1": "Commercial", "Category2": "Telephone Use", "RequiresAction": "No"},
+    {"Identifier": "A003", "DisplayName": "Agreement 3", "Status": "Inactive", "Category1": "Residential", "Category2": "Cable Utility Use", "RequiresAction": "Yes"},
+    {"Identifier": "A004", "DisplayName": "Agreement 4", "Status": "Terminated", "Category1": "Commercial", "Category2": "Other", "RequiresAction": "No"}
+]

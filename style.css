@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+main {
+    margin-top: 60px;
+}
+
+#dashboard, #agreements {
+    display: none;
+}
+
+.active {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.scrollable-list {
+    height: 200px;
+    overflow-y: auto;
+}
+
+.filters {
+    margin-bottom: 10px;
+}
+
+.search-area {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 100;
+}
+
+#search-results li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#search-results li:hover {
+    background-color: #ddd;
+}
