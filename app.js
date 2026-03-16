@@ -8,19 +8,15 @@ function getData() {
     fetch(rest_qry)
         .then(response => response.json())
         .then(data => {
-//			console.log(data);
-			createTable(data.features, data.fields);
 			return data;
-        }, data => { console.log('error'); }).then(data => { saveToLocalStorage("data", data); } );
+        }, data => { console.error('Error retrieving data', error); }).then(data => { saveToLocalStorage("data", data); } );
 };
 
-
 // Save JSON data to local storage
+
 function saveToLocalStorage(key, data) {
     try {
-		console.log(data);
         const jsonString = JSON.stringify(data);
-		console.log(jsonString);
 		console.log('saveToLocalStorage jsonString');
         localStorage.setItem(key, jsonString);
         console.log(`Data saved successfully to key: ${key}`);
@@ -32,7 +28,7 @@ function saveToLocalStorage(key, data) {
 }
 
 // Retrieve JSON data from local storage
-function loadFromLocalStorage(key) {
+async function loadFromLocalStorage(key) {
     try {
         const jsonString = localStorage.getItem(key);
         
@@ -58,7 +54,7 @@ function createTable(data, fields) {
 	tabulator_columns.push({title: 'id', field: 'id'});
 	fields.forEach(field => {
 		tabulator_columns.push(
-			{ title: field.alias, field: field.name, editor: "input", validator:["minLength:3", "maxLength:10", "string"]}
+			{ title: field.alias, field: field.name, editor: "input", validator:["minLength:3", "maxLength:10", "string"] }
 		);
 	});
 //	tabulator_columns.push({title: "test", field: 3, frozen:true});
@@ -68,6 +64,19 @@ function createTable(data, fields) {
 		height:"311px",
 //		layout:"fitColumns",
 //		movableRows:false,
+		columnDefaults:{ tooltip: function(e, cell, onRendered) { 
+				console.log(cell);
+				if (!cell.getElement().hasAttribute('data-bs-toggle')) {
+					cell.getElement().setAttribute('data-bs-toggle', "tooltip");
+					cell.getElement().setAttribute('data-bs-placement', "top");
+					cell.getElement().setAttribute('title', cell.getValue());
+					cell.getElement().setAttribute('data-bs-original-title', cell.getValue());
+					let tt = new bootstrap.Tooltip(cell.getElement(), {'delay': 5000} );
+					tt.show();
+				}
+			}
+		},
+		selectableRows: true,
 		autoColumns:true,
 		rowHeader:{headerSort:false, resizable: false, frozen:true, headerHozAlign:"center", hozAlign:"center", formatter:"rowSelection", titleFormatter:"rowSelection", cellClick:function(e, cell){
 			  cell.getRow().toggleSelect();
@@ -94,15 +103,27 @@ function createTable(data, fields) {
 
 }
 
+const copyTextToClipboard = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('Text copied to clipboard successfully!');
+    // Optional: Provide user feedback (e.g., a "Copied!" message)
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-	data = loadFromLocalStorage("data");
-	console.log(data);
-	if (data === null) {
-		data = getData();
-	} else {
-		createTable(data.features, data.fields);
-	}
+	loadFromLocalStorage("data")
+		.then(data => {
+			if (data === null) {
+				data = getData();
+			}
+			createTable(data.features, data.fields)
+		})
+		.catch((error) => console.error("Failed to get data", error));
 	
 //	result = saveToLocalStorage("data", data);
 
 });
+
